@@ -16,3 +16,6 @@ button { padding: 8px 14px; background: #1f2d3d; color: #fff; border: none; curs
 .badge-pending { background: #fff3cd; }
 .badge-approved { background: #d4edda; }
 .badge-rejected { background: #f8d7da; }
+h1 { font-size: 22px; }
+h2 { font-size: 17px; margin-top: 24px; }
+form { margin-bottom: 16px; }
