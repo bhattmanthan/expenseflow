@@ -1,0 +1,24 @@
+<%- include('../partials/header', { title: 'Approvals', user }) %>
+<h1>Approval queue</h1>
+<table>
+  <tr><th>Employee</th><th>Date</th><th>Category</th><th>Amount</th><th>Actions</th></tr>
+  <% expenses.forEach(e => { %>
+    <tr>
+      <td><a href="/expenses/<%= e.id %>"><%= e.employee.name %></a></td>
+      <td><%= e.date %></td>
+      <td><%= e.category %></td>
+      <td>$<%= e.amount %></td>
+      <td>
+        <form method="POST" action="/approvals/<%= e.id %>/approve" style="display:inline">
+          <input type="text" name="comment" placeholder="comment">
+          <button type="submit">Approve</button>
+        </form>
+        <form method="POST" action="/approvals/<%= e.id %>/reject" style="display:inline">
+          <input type="text" name="comment" placeholder="comment">
+          <button type="submit">Reject</button>
+        </form>
+      </td>
+    </tr>
+  <% }) %>
+</table>
+<%- include('../partials/footer') %>

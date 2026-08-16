@@ -33,5 +33,6 @@ app.use('/auth', require('./routes/auth'));
 app.use('/expenses', require('./routes/expenses'));
 app.use('/expenses/:expenseId/attachments', require('./routes/attachments'));
 app.use('/expenses/:expenseId/comments', require('./routes/comments'));
+app.use('/approvals', require('./routes/approvals'));
 
 module.exports = app;
