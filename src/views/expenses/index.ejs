@@ -30,4 +30,7 @@
     </tr>
   <% }) %>
 </table>
+<% if (expenses.length === 0) { %>
+  <p>No expenses match your filters.</p>
+<% } %>
 <%- include('../partials/footer') %>
