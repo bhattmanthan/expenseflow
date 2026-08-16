@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('./utils/logger');
+const { loadUser } = require('./middleware/auth');
 
 const app = express();
 
@@ -18,6 +19,8 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(loadUser);
+
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
@@ -25,5 +28,7 @@ app.get('/health', (req, res) => {
 app.get('/', (req, res) => {
   res.render('index', { user: req.user || null });
 });
+
+app.use('/auth', require('./routes/auth'));
 
 module.exports = app;
