@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const { User, PasswordResetToken } = require('../models');
 const { signAccessToken, signRefreshToken, verifyRefreshToken } = require('../utils/jwt');
 const { sendPasswordResetEmail } = require('../utils/mailer');
+const { loginRateLimit } = require('../middleware/rateLimit');
 const logger = require('../utils/logger');
 
 const router = express.Router();
@@ -34,7 +35,7 @@ router.get('/login', (req, res) => {
   res.render('auth/login', { user: null, error: null });
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', loginRateLimit, async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ where: { email } });
   if (!user || !user.isActive) {
