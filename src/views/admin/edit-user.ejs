@@ -10,7 +10,14 @@
       <option value="finance_admin" <%= editUser.role === 'finance_admin' ? 'selected' : '' %>>finance_admin</option>
     </select>
   </div>
-  <div class="form-group"><label>Manager ID</label><input name="managerId" value="<%= editUser.managerId || '' %>"></div>
+  <div class="form-group"><label>Manager</label>
+    <select name="managerId">
+      <option value="">None</option>
+      <% managers.forEach(m => { %>
+        <option value="<%= m.id %>" <%= editUser.managerId === m.id ? 'selected' : '' %>><%= m.name %></option>
+      <% }) %>
+    </select>
+  </div>
   <button type="submit">Save</button>
 </form>
 <%- include('../partials/footer') %>

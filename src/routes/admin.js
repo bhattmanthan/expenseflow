@@ -15,7 +15,8 @@ router.get('/users', async (req, res) => {
 router.get('/users/:id/edit', async (req, res) => {
   const editUser = await User.findByPk(req.params.id);
   if (!editUser) return res.status(404).render('error', { message: 'Not found', user: req.user });
-  res.render('admin/edit-user', { user: req.user, editUser });
+  const managers = await User.findAll({ where: { role: ['manager', 'finance_admin'] }, order: [['name', 'ASC']] });
+  res.render('admin/edit-user', { user: req.user, editUser, managers });
 });
 
 router.post('/users/:id', async (req, res) => {
