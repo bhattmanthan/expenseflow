@@ -36,5 +36,6 @@ app.use('/expenses/:expenseId/comments', require('./routes/comments'));
 app.use('/approvals', require('./routes/approvals'));
 app.use('/profile', require('./routes/profile'));
 app.use('/reports', require('./routes/reports'));
+app.use('/admin', require('./routes/admin'));
 
 module.exports = app;

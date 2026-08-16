@@ -1,0 +1,27 @@
+<%- include('../partials/header', { title: 'Admin: users', user }) %>
+<h1>User accounts</h1>
+<table>
+  <tr><th>Name</th><th>Email</th><th>Department</th><th>Role</th><th>Active</th><th></th></tr>
+  <% users.forEach(u => { %>
+    <tr>
+      <td><%= u.name %></td>
+      <td><%= u.email %></td>
+      <td><%= u.department %></td>
+      <td><%= u.role %></td>
+      <td><%= u.isActive ? 'yes' : 'no' %></td>
+      <td>
+        <a href="/admin/users/<%= u.id %>/edit">Edit</a>
+        <% if (u.isActive) { %>
+          <form method="POST" action="/admin/users/<%= u.id %>/deactivate" style="display:inline">
+            <button type="submit">Deactivate</button>
+          </form>
+        <% } else { %>
+          <form method="POST" action="/admin/users/<%= u.id %>/activate" style="display:inline">
+            <button type="submit">Activate</button>
+          </form>
+        <% } %>
+      </td>
+    </tr>
+  <% }) %>
+</table>
+<%- include('../partials/footer') %>
