@@ -1,0 +1,43 @@
+<%- include('../partials/header', { title: 'Reports', user }) %>
+<h1>Reports</h1>
+
+<h2>Department Spend Report</h2>
+<form method="POST" action="/reports/department">
+  <input type="date" name="dateFrom" value="<%= filters.dateFrom || '' %>" required>
+  <input type="date" name="dateTo" value="<%= filters.dateTo || '' %>" required>
+  <input name="search" placeholder="search descriptions" value="<%= filters.search || '' %>">
+  <button type="submit">Run</button>
+</form>
+<% if (deptResults) { %>
+  <table>
+    <tr><th>Department</th><th>Claims</th><th>Total spend</th></tr>
+    <% deptResults.forEach(r => { %>
+      <tr><td><%= r.department %></td><td><%= r.claim_count %></td><td>$<%= r.total_spend %></td></tr>
+    <% }) %>
+  </table>
+<% } %>
+
+<h2>Employee History Report</h2>
+<form method="POST" action="/reports/employee">
+  <input type="date" name="dateFrom" value="<%= filters.dateFrom || '' %>" required>
+  <input type="date" name="dateTo" value="<%= filters.dateTo || '' %>" required>
+  <input name="search" placeholder="search descriptions/notes" value="<%= filters.search || '' %>">
+  <button type="submit">Run</button>
+</form>
+<% if (empResults) { %>
+  <table>
+    <tr><th>Employee</th><th>Dept</th><th>Date</th><th>Category</th><th>Amount</th><th>Status</th><th>Description</th></tr>
+    <% empResults.forEach(r => { %>
+      <tr>
+        <td><%= r.employee_name %></td>
+        <td><%= r.department %></td>
+        <td><%= r.date %></td>
+        <td><%= r.category %></td>
+        <td>$<%= r.amount %></td>
+        <td><%= r.status %></td>
+        <td><%= r.description %></td>
+      </tr>
+    <% }) %>
+  </table>
+<% } %>
+<%- include('../partials/footer') %>
