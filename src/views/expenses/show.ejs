@@ -24,6 +24,15 @@
   <button type="submit">Upload receipt</button>
 </form>
 
+<% if (expense.approvalLogs.length > 0) { %>
+  <h2>Approval history</h2>
+  <ul>
+    <% expense.approvalLogs.forEach(l => { %>
+      <li><%= l.actor.name %>: <%= l.previousStatus %> &rarr; <%= l.newStatus %><% if (l.comment) { %> - "<%= l.comment %>"<% } %></li>
+    <% }) %>
+  </ul>
+<% } %>
+
 <h2>Comments</h2>
 <ul>
   <% expense.comments.forEach(c => { %>

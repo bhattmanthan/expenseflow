@@ -1,6 +1,6 @@
 const express = require('express');
 const { Op } = require('sequelize');
-const { Expense, User, Attachment, Comment } = require('../models');
+const { Expense, User, Attachment, Comment, ApprovalLog } = require('../models');
 const { requireAuth } = require('../middleware/auth');
 
 const router = express.Router();
@@ -71,6 +71,7 @@ router.get('/:id', async (req, res) => {
       { model: User, as: 'employee' },
       { model: Attachment, as: 'attachments' },
       { model: Comment, as: 'comments', include: [{ model: User, as: 'author' }] },
+      { model: ApprovalLog, as: 'approvalLogs', include: [{ model: User, as: 'actor' }] },
     ],
   });
   if (!expense) return res.status(404).render('error', { message: 'Not found', user: req.user });
