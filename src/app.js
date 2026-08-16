@@ -26,7 +26,8 @@ app.get('/health', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.render('index', { user: req.user || null });
+  if (req.user) return res.redirect('/expenses');
+  res.render('index', { user: null });
 });
 
 app.use('/auth', require('./routes/auth'));
