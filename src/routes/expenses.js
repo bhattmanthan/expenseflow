@@ -52,6 +52,9 @@ router.get('/new', (req, res) => {
 
 router.post('/', async (req, res) => {
   const { amount, category, date, description } = req.body;
+  if (!amount || Number(amount) <= 0) {
+    return res.status(400).render('expenses/new', { user: req.user, error: 'Amount must be greater than 0' });
+  }
   await Expense.create({
     userId: req.user.id,
     amount,
