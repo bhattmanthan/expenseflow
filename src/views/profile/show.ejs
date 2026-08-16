@@ -1,0 +1,17 @@
+<%- include('../partials/header', { title: 'Profile', user }) %>
+<h1>Profile</h1>
+<% if (profileUser.avatarUrl) { %>
+  <img src="<%= profileUser.avatarUrl %>" alt="avatar" width="80">
+<% } %>
+<form method="POST" action="/profile" enctype="multipart/form-data">
+  <div class="form-group"><label>Name</label><input name="name" value="<%= profileUser.name %>"></div>
+  <div class="form-group"><label>Email</label><input value="<%= profileUser.email %>" disabled></div>
+  <div class="form-group"><label>Department</label><input name="department" value="<%= profileUser.department %>"></div>
+  <div class="form-group"><label>Notes</label><textarea name="notes"><%= profileUser.notes %></textarea></div>
+  <button type="submit">Save</button>
+</form>
+<form method="POST" action="/profile/avatar" enctype="multipart/form-data">
+  <input type="file" name="avatar" accept="image/*">
+  <button type="submit">Upload avatar</button>
+</form>
+<%- include('../partials/footer') %>
