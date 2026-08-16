@@ -1,0 +1,38 @@
+<%- include('../partials/header', { title: 'Expense detail', user }) %>
+<h1>Expense</h1>
+<table>
+  <tr><th>Employee</th><td><%= expense.employee.name %> (<%= expense.employee.department %>)</td></tr>
+  <tr><th>Date</th><td><%= expense.date %></td></tr>
+  <tr><th>Category</th><td><%= expense.category %></td></tr>
+  <tr><th>Amount</th><td>$<%= expense.amount %></td></tr>
+  <tr><th>Status</th><td><span class="badge badge-<%= expense.status %>"><%= expense.status %></span></td></tr>
+  <tr><th>Description</th><td><%= expense.description %></td></tr>
+</table>
+
+<% if (expense.userId === user.id) { %>
+  <p><a href="/expenses/<%= expense.id %>/edit">Edit</a></p>
+<% } %>
+
+<h2>Attachments</h2>
+<ul>
+  <% expense.attachments.forEach(a => { %>
+    <li><a href="/expenses/<%= expense.id %>/attachments/<%= a.id %>"><%= a.originalFilename %></a></li>
+  <% }) %>
+</ul>
+<form method="POST" action="/expenses/<%= expense.id %>/attachments" enctype="multipart/form-data">
+  <input type="file" name="receipt" accept="image/*,application/pdf" required>
+  <button type="submit">Upload receipt</button>
+</form>
+
+<h2>Comments</h2>
+<ul>
+  <% expense.comments.forEach(c => { %>
+    <li><strong><%= c.author.name %>:</strong> <%= c.body %></li>
+  <% }) %>
+</ul>
+<form method="POST" action="/expenses/<%= expense.id %>/comments">
+  <textarea name="body" required></textarea>
+  <button type="submit">Comment</button>
+</form>
+
+<%- include('../partials/footer') %>

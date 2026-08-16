@@ -30,5 +30,6 @@ app.get('/', (req, res) => {
 });
 
 app.use('/auth', require('./routes/auth'));
+app.use('/expenses', require('./routes/expenses'));
 
 module.exports = app;

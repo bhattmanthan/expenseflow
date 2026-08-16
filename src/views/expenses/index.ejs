@@ -1,0 +1,33 @@
+<%- include('../partials/header', { title: 'Expenses', user }) %>
+<h1>Expenses</h1>
+<p><a href="/expenses/new">+ New expense</a></p>
+<form method="GET" action="/expenses">
+  <% if (user.role !== 'employee') { %>
+  <input name="department" placeholder="Department" value="<%= query.department || '' %>">
+  <% } %>
+  <input type="date" name="dateFrom" value="<%= query.dateFrom || '' %>">
+  <input type="date" name="dateTo" value="<%= query.dateTo || '' %>">
+  <input name="amountMin" placeholder="Min amount" value="<%= query.amountMin || '' %>">
+  <input name="amountMax" placeholder="Max amount" value="<%= query.amountMax || '' %>">
+  <select name="sort">
+    <option value="newest" <%= query.sort === 'newest' ? 'selected' : '' %>>Newest</option>
+    <option value="amount_asc" <%= query.sort === 'amount_asc' ? 'selected' : '' %>>Amount asc</option>
+    <option value="amount_desc" <%= query.sort === 'amount_desc' ? 'selected' : '' %>>Amount desc</option>
+    <option value="department" <%= query.sort === 'department' ? 'selected' : '' %>>Department</option>
+  </select>
+  <button type="submit">Filter</button>
+</form>
+<table>
+  <tr><th>Date</th><th>Employee</th><th>Category</th><th>Amount</th><th>Status</th></tr>
+  <% expenses.forEach(e => { %>
+    <tr>
+      <td><%= e.date %></td>
+      <td><%= e.employee ? e.employee.name : '' %></td>
+      <td><%= e.category %></td>
+      <td>$<%= e.amount %></td>
+      <td><span class="badge badge-<%= e.status %>"><%= e.status %></span></td>
+      <td><a href="/expenses/<%= e.id %>">View</a></td>
+    </tr>
+  <% }) %>
+</table>
+<%- include('../partials/footer') %>
