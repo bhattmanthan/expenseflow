@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%= typeof title !== 'undefined' ? title : 'ExpenseFlow' %></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a href="/">ExpenseFlow</a>
+    <% if (typeof user !== 'undefined' && user) { %>
+      <a href="/expenses">Expenses</a>
+      <% if (user.role === 'manager' || user.role === 'finance_admin') { %>
+        <a href="/approvals">Approvals</a>
+      <% } %>
+      <% if (user.role === 'finance_admin') { %>
+        <a href="/reports">Reports</a>
+        <a href="/admin/users">Admin</a>
+      <% } %>
+      <a href="/profile">Profile</a>
+      <a href="/auth/logout">Logout</a>
+    <% } else { %>
+      <a href="/auth/login">Login</a>
+      <a href="/auth/register">Register</a>
+    <% } %>
+  </nav>
+  <main class="container">

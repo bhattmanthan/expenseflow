@@ -1,0 +1,7 @@
+<%- include('partials/header', { title: 'ExpenseFlow', user: typeof user !== 'undefined' ? user : null }) %>
+<h1>ExpenseFlow</h1>
+<p>Corporate expense reimbursement, for people who hate paper forms.</p>
+<% if (!user) { %>
+  <p><a href="/auth/login">Log in</a> or <a href="/auth/register">register</a> to get started.</p>
+<% } %>
+<%- include('partials/footer') %>
