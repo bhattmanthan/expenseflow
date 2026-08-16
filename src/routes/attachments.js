@@ -1,15 +1,21 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const { v4: uuidv4 } = require('uuid');
 const { Attachment, Expense } = require('../models');
 const { requireAuth } = require('../middleware/auth');
+const { convertReceipt } = require('../utils/receiptConverter');
+const logger = require('../utils/logger');
 
 const router = express.Router({ mergeParams: true });
 
 const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(__dirname, '../../uploads');
 
-const upload = multer({ dest: UPLOAD_DIR });
+// keep the original filename on disk so archived receipts stay human-readable
+const storage = multer.diskStorage({
+  destination: UPLOAD_DIR,
+  filename: (req, file, cb) => cb(null, file.originalname),
+});
+const upload = multer({ storage });
 
 router.use(requireAuth);
 
@@ -17,10 +23,18 @@ router.post('/', upload.single('receipt'), async (req, res) => {
   const expense = await Expense.findByPk(req.params.expenseId);
   if (!expense) return res.status(404).render('error', { message: 'Not found', user: req.user });
 
+  let storedFilename = req.file.filename;
+  try {
+    const archivedPath = await convertReceipt(UPLOAD_DIR, req.file.originalname, expense.date);
+    storedFilename = path.basename(archivedPath);
+  } catch (err) {
+    logger.warn('receipt conversion failed, keeping original upload', { error: err.message });
+  }
+
   const attachment = await Attachment.create({
     expenseId: expense.id,
     originalFilename: req.file.originalname,
-    storedFilename: req.file.filename,
+    storedFilename,
     mimeType: req.file.mimetype,
   });
 
