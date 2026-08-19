@@ -15,8 +15,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  const { name, department, notes } = req.body;
-  await req.user.update({ name, department, notes });
+  await req.user.update(req.body);
   res.redirect('/profile');
 });
 
