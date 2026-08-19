@@ -1,5 +1,9 @@
 <%- include('../partials/header', { title: 'Approvals', user }) %>
 <h1>Approval queue</h1>
+<% if (expenses.length === 0) { %>
+  <div class="empty-state">Nothing waiting on you right now.</div>
+<% } else { %>
+<div class="table-wrap">
 <table>
   <tr><th>Employee</th><th>Date</th><th>Category</th><th>Amount</th><th>Actions</th></tr>
   <% expenses.forEach(e => { %>
@@ -9,16 +13,20 @@
       <td><%= e.category %></td>
       <td>$<%= e.amount %></td>
       <td>
-        <form method="POST" action="/approvals/<%= e.id %>/approve" style="display:inline">
-          <input type="text" name="comment" placeholder="comment">
-          <button type="submit">Approve</button>
-        </form>
-        <form method="POST" action="/approvals/<%= e.id %>/reject" style="display:inline">
-          <input type="text" name="comment" placeholder="comment">
-          <button type="submit">Reject</button>
-        </form>
+        <div class="actions">
+          <form method="POST" action="/approvals/<%= e.id %>/approve" class="actions">
+            <input type="text" name="comment" placeholder="comment">
+            <button type="submit">Approve</button>
+          </form>
+          <form method="POST" action="/approvals/<%= e.id %>/reject" class="actions">
+            <input type="text" name="comment" placeholder="comment">
+            <button type="submit" class="btn-danger">Reject</button>
+          </form>
+        </div>
       </td>
     </tr>
   <% }) %>
 </table>
+</div>
+<% } %>
 <%- include('../partials/footer') %>
