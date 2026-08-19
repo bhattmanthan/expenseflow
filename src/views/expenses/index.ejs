@@ -1,7 +1,9 @@
 <%- include('../partials/header', { title: 'Expenses', user }) %>
-<h1>Expenses</h1>
-<p><a href="/expenses/new">+ New expense</a></p>
-<form method="GET" action="/expenses">
+<div class="page-header">
+  <h1>Expenses</h1>
+  <a href="/expenses/new" class="btn">+ New expense</a>
+</div>
+<form method="GET" action="/expenses" class="filter-bar">
   <% if (user.role !== 'employee') { %>
   <input name="department" placeholder="Department" value="<%= query.department || '' %>">
   <% } %>
@@ -15,10 +17,14 @@
     <option value="amount_desc" <%= query.sort === 'amount_desc' ? 'selected' : '' %>>Amount desc</option>
     <option value="department" <%= query.sort === 'department' ? 'selected' : '' %>>Department</option>
   </select>
-  <button type="submit">Filter</button>
+  <button type="submit" class="btn-secondary">Filter</button>
 </form>
+<% if (expenses.length === 0) { %>
+  <div class="empty-state">No expenses match your filters.</div>
+<% } else { %>
+<div class="table-wrap">
 <table>
-  <tr><th>Date</th><th>Employee</th><th>Category</th><th>Amount</th><th>Status</th></tr>
+  <tr><th>Date</th><th>Employee</th><th>Category</th><th>Amount</th><th>Status</th><th></th></tr>
   <% expenses.forEach(e => { %>
     <tr>
       <td><%= e.date %></td>
@@ -30,7 +36,6 @@
     </tr>
   <% }) %>
 </table>
-<% if (expenses.length === 0) { %>
-  <p>No expenses match your filters.</p>
+</div>
 <% } %>
 <%- include('../partials/footer') %>

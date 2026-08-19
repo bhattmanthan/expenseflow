@@ -1,47 +1,59 @@
 <%- include('../partials/header', { title: 'Expense detail', user }) %>
-<h1>Expense</h1>
-<table>
-  <tr><th>Employee</th><td><%= expense.employee.name %> (<%= expense.employee.department %>)</td></tr>
-  <tr><th>Date</th><td><%= expense.date %></td></tr>
-  <tr><th>Category</th><td><%= expense.category %></td></tr>
-  <tr><th>Amount</th><td>$<%= expense.amount %></td></tr>
-  <tr><th>Status</th><td><span class="badge badge-<%= expense.status %>"><%= expense.status %></span></td></tr>
-  <tr><th>Description</th><td><%= expense.description %></td></tr>
-</table>
+<div class="page-header">
+  <h1>Expense</h1>
+  <% if (expense.userId === user.id) { %>
+    <a href="/expenses/<%= expense.id %>/edit" class="btn btn-secondary">Edit</a>
+  <% } %>
+</div>
 
-<% if (expense.userId === user.id) { %>
-  <p><a href="/expenses/<%= expense.id %>/edit">Edit</a></p>
-<% } %>
+<div class="card">
+  <dl class="detail-grid">
+    <dt>Employee</dt><dd><%= expense.employee.name %> (<%= expense.employee.department %>)</dd>
+    <dt>Date</dt><dd><%= expense.date %></dd>
+    <dt>Category</dt><dd><%= expense.category %></dd>
+    <dt>Amount</dt><dd>$<%= expense.amount %></dd>
+    <dt>Status</dt><dd><span class="badge badge-<%= expense.status %>"><%= expense.status %></span></dd>
+    <dt>Description</dt><dd><%= expense.description %></dd>
+  </dl>
+</div>
 
 <h2>Attachments</h2>
-<ul>
-  <% expense.attachments.forEach(a => { %>
-    <li><a href="/expenses/<%= expense.id %>/attachments/<%= a.id %>"><%= a.originalFilename %></a></li>
-  <% }) %>
-</ul>
-<form method="POST" action="/expenses/<%= expense.id %>/attachments" enctype="multipart/form-data">
-  <input type="file" name="receipt" accept="image/*,application/pdf" required>
-  <button type="submit">Upload receipt</button>
-</form>
+<div class="card">
+  <ul class="attachment-list">
+    <% expense.attachments.forEach(a => { %>
+      <li><a href="/expenses/<%= expense.id %>/attachments/<%= a.id %>"><%= a.originalFilename %></a></li>
+    <% }) %>
+    <% if (expense.attachments.length === 0) { %><li>No attachments yet.</li><% } %>
+  </ul>
+  <form method="POST" action="/expenses/<%= expense.id %>/attachments" enctype="multipart/form-data">
+    <input type="file" name="receipt" accept="image/*,application/pdf" required>
+    <button type="submit">Upload receipt</button>
+  </form>
+</div>
 
 <% if (expense.approvalLogs.length > 0) { %>
   <h2>Approval history</h2>
-  <ul>
-    <% expense.approvalLogs.forEach(l => { %>
-      <li><%= l.actor.name %>: <%= l.previousStatus %> &rarr; <%= l.newStatus %><% if (l.comment) { %> - "<%= l.comment %>"<% } %></li>
-    <% }) %>
-  </ul>
+  <div class="card">
+    <ul class="activity-list">
+      <% expense.approvalLogs.forEach(l => { %>
+        <li><%= l.actor.name %>: <%= l.previousStatus %> &rarr; <%= l.newStatus %><% if (l.comment) { %> &mdash; "<%= l.comment %>"<% } %></li>
+      <% }) %>
+    </ul>
+  </div>
 <% } %>
 
 <h2>Comments</h2>
-<ul>
-  <% expense.comments.forEach(c => { %>
-    <li><strong><%= c.author.name %>:</strong> <%= c.body %></li>
-  <% }) %>
-</ul>
-<form method="POST" action="/expenses/<%= expense.id %>/comments">
-  <textarea name="body" required></textarea>
-  <button type="submit">Comment</button>
-</form>
+<div class="card">
+  <ul class="activity-list">
+    <% expense.comments.forEach(c => { %>
+      <li><strong><%= c.author.name %>:</strong> <%= c.body %></li>
+    <% }) %>
+    <% if (expense.comments.length === 0) { %><li>No comments yet.</li><% } %>
+  </ul>
+  <form method="POST" action="/expenses/<%= expense.id %>/comments">
+    <textarea name="body" required></textarea>
+    <button type="submit">Comment</button>
+  </form>
+</div>
 
 <%- include('../partials/footer') %>

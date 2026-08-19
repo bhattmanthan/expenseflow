@@ -1,7 +1,12 @@
 <%- include('partials/header', { title: 'ExpenseFlow', user: typeof user !== 'undefined' ? user : null }) %>
-<h1>ExpenseFlow</h1>
-<p>Corporate expense reimbursement, for people who hate paper forms.</p>
-<% if (!user) { %>
-  <p><a href="/auth/login">Log in</a> or <a href="/auth/register">register</a> to get started.</p>
-<% } %>
+<div class="card" style="text-align:center; padding:48px 24px;">
+  <h1 style="font-size:28px;">ExpenseFlow</h1>
+  <p>Corporate expense reimbursement, for people who hate paper forms.</p>
+  <% if (!user) { %>
+    <div class="actions" style="justify-content:center; margin-top:20px;">
+      <a href="/auth/login" class="btn">Log in</a>
+      <a href="/auth/register" class="btn btn-secondary">Register</a>
+    </div>
+  <% } %>
+</div>
 <%- include('partials/footer') %>
