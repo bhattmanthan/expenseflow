@@ -7,7 +7,7 @@
 </head>
 <body>
   <nav class="navbar">
-    <a href="/">ExpenseFlow</a>
+    <a href="/" class="brand">ExpenseFlow</a>
     <% if (typeof user !== 'undefined' && user) { %>
       <a href="/expenses">Expenses</a>
       <% if (user.role === 'manager' || user.role === 'finance_admin') { %>
@@ -17,9 +17,11 @@
         <a href="/reports">Reports</a>
         <a href="/admin/users">Admin</a>
       <% } %>
+      <span class="nav-spacer"></span>
       <a href="/profile">Profile</a>
       <a href="/auth/logout">Logout</a>
     <% } else { %>
+      <span class="nav-spacer"></span>
       <a href="/auth/login">Login</a>
       <a href="/auth/register">Register</a>
     <% } %>
